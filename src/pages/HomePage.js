@@ -1,12 +1,24 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { PostCard } from "../components";
+
+import { getDocs, collection } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
 export const HomePage = () => {
 
-  const posts = [
-    {id: 1, title: 'Lorem ipsum dolor sit amet.', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam perferendis sunt enim magnam deleniti aut error sit est perspiciatis, veniam corporis! Quaerat pariatur laborum provident odit voluptates, ad atque quod maiores distinctio, nulla nobis a architecto dolores commodi, illo libero magni consequatur esse labore ea harum dicta reiciendis. Debitis, dolore.', author: 'Minh Huy'},
-    {id: 2, title: 'Lorem ipsum dolor sit amet fafwef.', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam perferendis sunt enim magnam deleniti aut error sit est perspiciatis, veniam corporis! Quaerat pariatur laborum provident odit voluptates, ad atque quod maiores distinctio, nulla nobis a architecto dolores commodi, illo libero magni consequatur esse labore ea harum dicta reiciendis. Debitis, dolore.', author: 'Minh Duc'},
-  ]
+  const [ posts, setPost ] = useState([]);
+  const postsRef = collection(db, 'posts');
+
+  useEffect(() => {
+    async function getPosts() {
+      const data = await getDocs(postsRef);
+      setPost(data.docs.map((document) => ({
+        ...document.data(),
+        id: document.id
+      })));
+    }
+    getPosts();
+  }, [postsRef])
   
   return (
     <section>
