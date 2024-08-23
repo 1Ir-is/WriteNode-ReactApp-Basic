@@ -1,8 +1,16 @@
 import React from 'react'
+import { auth, db } from '../firebase/config';
+import { doc, deleteDoc } from 'firebase/firestore';
 
 export const PostCard = ({ post }) => {
 
   const { title, description, author } = post
+  const isAuth = JSON.parse(localStorage.getItem("isAuth"));
+
+  async function handleDelete() {
+    const document = doc(db, 'posts', post.id);
+    await deleteDoc(document);
+  }
 
   return (
     <div className='card'>
@@ -10,7 +18,7 @@ export const PostCard = ({ post }) => {
       <p className='description'>{description}</p>
       <p className='control'>
         <span className='author'>{author.name}</span>
-        <span className='delete'><i className='bi bi-trash3'></i></span>
+        { isAuth && (author.id === auth.currentUser.uid) && <span onClick={handleDelete} className='delete'><i className='bi bi-trash3'></i></span> }     
       </p>
     </div>
   )
