@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NotFound from "../assets/images/page-not-found.jpg";
+import { useTitle } from '../hooks/useTitle';
 
 
 export const PageNotFound = () => {
+  useTitle('Page Not Found');
   return (
     <section className='pageNotFound'>
       <p>Oops! Page Not Found.</p>

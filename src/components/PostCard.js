@@ -2,7 +2,7 @@ import React from 'react'
 import { auth, db } from '../firebase/config';
 import { doc, deleteDoc } from 'firebase/firestore';
 
-export const PostCard = ({ post }) => {
+export const PostCard = ({ post , toggle, setToggle }) => {
 
   const { title, description, author } = post
   const isAuth = JSON.parse(localStorage.getItem("isAuth"));
@@ -10,6 +10,7 @@ export const PostCard = ({ post }) => {
   async function handleDelete() {
     const document = doc(db, 'posts', post.id);
     await deleteDoc(document);
+    setToggle(!toggle);
   }
 
   return (
