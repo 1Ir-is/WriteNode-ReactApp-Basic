@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import Logo from "../assets/logo.png"; 
+import { signInWithPopup, signOut } from 'firebase/auth';
+import { auth, googleProvider } from '../firebase/config';
+
+import Logo from "../assets/logo.png";
 
 export const Header = () => {
 
-  const isAuth = true;
+  const [isAuth, setIsAuth] = useState(false);
+
+  function handleLogin() {
+    signInWithPopup(auth, googleProvider).then((result) => {
+      setIsAuth(true);
+      console.log(result);
+    })
+  }
+
+  function handleLogout() {
+    signOut(auth);
+    setIsAuth(false);
+  }
 
   return (
     <header>
@@ -15,21 +30,21 @@ export const Header = () => {
 
       <nav className='nav' style={{ display: 'flex', alignItems: 'center' }}>
         <NavLink to="/" className="link">Home</NavLink>
-        
-        { isAuth ? (
+
+        {isAuth ? (
           <>
             <NavLink to="/create" className="link">Create Post</NavLink>
-            <button className='auth' style={{ display: 'flex', alignItems: 'center', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>
+            <button onClick={handleLogout} className='auth' style={{ display: 'flex', alignItems: 'center', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>
               <i className='bi bi-box-arrow-right' style={{ marginRight: '8px' }}></i>
               Logout
             </button>
           </>
         ) : (
-          <button className='auth' style={{ display: 'flex', alignItems: 'center', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>
+          <button onClick={handleLogin} className='auth' style={{ display: 'flex', alignItems: 'center', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>
             <i className='bi bi-google' style={{ marginRight: '8px' }}></i>
             Login
           </button>
-        ) }
+        )}
       </nav>
 
     </header>
