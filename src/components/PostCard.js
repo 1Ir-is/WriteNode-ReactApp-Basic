@@ -9,7 +9,7 @@ export const PostCard = ({ post }) => {
       <p className='title'>{title}</p>
       <p className='description'>{description}</p>
       <p className='control'>
-        <span className='author'>{author}</span>
+        <span className='author'>{author.name}</span>
         <span className='delete'><i className='bi bi-trash3'></i></span>
       </p>
     </div>

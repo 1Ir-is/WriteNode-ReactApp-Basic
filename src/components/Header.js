@@ -7,18 +7,20 @@ import Logo from "../assets/logo.png";
 
 export const Header = () => {
 
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(JSON.parse(localStorage.getItem("isAuth")) || false);
 
   function handleLogin() {
     signInWithPopup(auth, googleProvider).then((result) => {
-      setIsAuth(true);
       console.log(result);
+      setIsAuth(true);
+      localStorage.setItem('isAuth', true);
     })
   }
 
   function handleLogout() {
     signOut(auth);
     setIsAuth(false);
+    localStorage.setItem('isAuth', false);
   }
 
   return (
